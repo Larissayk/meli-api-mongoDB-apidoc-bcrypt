@@ -1,19 +1,28 @@
 {
   "name": "n1-meli-projeto-mongodb",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "npm ./server.js",
     "dev": "nodemon ./server.js"
-
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.11"
   },
   "devDependencies": {
     "nodemon": "^1.19.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Larissayk/n1-meli-projeto-mongoDB.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Larissayk/n1-meli-projeto-mongoDB/issues"
+  },
+  "homepage": "https://github.com/Larissayk/n1-meli-projeto-mongoDB#readme",
+  "description": ""
 }
