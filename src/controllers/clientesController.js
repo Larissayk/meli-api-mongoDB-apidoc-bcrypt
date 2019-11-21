@@ -47,3 +47,21 @@ exports.post = (req, res) => {
     });
   });
 };
+
+//PUT
+//clientes/:cpf
+exports.updateClientePorCpf = (req, res) => {
+  const cpfClientes = req.params.cpf;
+  Clientes.updateOne({ cpf: cpfClientes }, { $set: req.body }, function(
+    err,
+    cliente
+  ) {
+    if (err) res.status(500).send(err);
+    console.log(cliente)
+    res
+      .status(200)
+      .send({
+        mensagem: `Cliente atualizado com sucesso!`
+      });
+  });
+};

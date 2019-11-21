@@ -10,4 +10,7 @@ router.get("/:cpf", controller.getClientesPorCpf)
 //Rotas POST
 router.post("/", controller.post)
 
+//Rotas PUT
+router.put("/:cpf", controller.updateClientePorCpf)
+
 module.exports = router;
