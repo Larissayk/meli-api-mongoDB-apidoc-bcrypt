@@ -42,4 +42,7 @@ router.put("/:cpf", controller.updateCliente);
 //Rota DELETE
 router.delete("/:cpf", controller.deleteCliente);
 
+//Rotas PUT
+router.put("/:cpf", controller.updateClientePorCpf)
+
 module.exports = router;
