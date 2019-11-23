@@ -6,10 +6,16 @@ const app = express();
 app.use(express.json());
 //app.use(bodyParser.json());
 
+app.use(express.static("public"));
+
 //conexão com o MongoDB
 mongoose.connect("mongodb://localhost:27017/clientes", {
   useNewUrlParser: true
 });
+
+// mongoose.connect("mongodb+srv://Admin:admin3214@cluster0-nym3u.mongodb.net/clientes", {
+//   useNewUrlParser: true
+// });
 
 let db = mongoose.connection;
 db.on("error", console.log.bind(console, "connection error:"));
