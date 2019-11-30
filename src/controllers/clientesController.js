@@ -1,4 +1,6 @@
 const Clientes = require("../model/clientes");
+const bcrypt = require("bcryptjs");
+const bcryptSalt = 8;
 
 //GET
 
@@ -58,50 +60,74 @@ exports.getClientesPorCpf = (req, res) => {
 //POST
 
 // Rota /clientes
-exports.post = (req, res) => {
-  let cliente = new Clientes(req.body);
+exports.post = async (req, res) => {
+  const {
+    nome,
+    email,
+    cpf,
+    dataNascimento,
+    estadoCivil,
+    telefone,
+    comprou,
+    password
+  } = req.body;
+  const salt = bcrypt.genSaltSync(bcryptSalt);
+  const hashPass = await bcrypt.hashSync(password, salt);
 
-  cliente.save(function(err) {
-    if (err) res.status(500).send(err);
-
-    res.status(201).send({
-      status: true,
-      mensagem: `Cliente ${cliente.nome} incluído(a) com sucesso!`
-    });
+  const newCliente = new Clientes({
+    nome,
+    email,
+    cpf,
+    dataNascimento,
+    estadoCivil,
+    telefone,
+    comprou,
+    password:hashPass
   });
-};
 
+  try {
+    newCliente.save(function(err){
+      if (err) {
+        return res.status(500).send({ message: err });
+      }
+      console.log("The file was saved!");
+    })
+    return res.status(201).send({
+      mensagem: `Cliente ${newCliente.nome} incluído(a) com sucesso!`
+    })
+  } catch (e) {
+    return res.status(401).json({ error: "erro" });
+  }
+};
 
 //PUT
 
 //Rota/usuarios/edit/:id
 exports.updateCliente = (req, res) => {
-
   const usuarioCpf = req.params.cpf;
 
-  Clientes.updateOne(
-    { cpf: usuarioCpf },
-    { $set: req.body },
-    function(err, cliente) {
-      if (err) res.status(500).send(err);
-      if (!cliente) {
-        return res.status(404).send({
-          message: `Não foi possível localizar o usuário de CPF: ${usuarioCpf}`
-        });
-      }
-      console.log(cliente.nome)
-      res.status(200).send({
-        status: "ativo",
-        mensagem: `Cliente(a) ${cliente.nome} atualizado(a) com sucesso!`
+  Clientes.updateOne({ cpf: usuarioCpf }, { $set: req.body }, function(
+    err,
+    cliente
+  ) {
+    if (err) res.status(500).send(err);
+    if (!cliente) {
+      return res.status(404).send({
+        message: `Não foi possível localizar o usuário de CPF: ${usuarioCpf}`
       });
     }
-  );
+    console.log(cliente.nome);
+    res.status(200).send({
+      status: "ativo",
+      mensagem: `Cliente(a) ${cliente.nome} atualizado(a) com sucesso!`
+    });
+  });
 };
 
 //DELETE
 exports.deleteCliente = (req, res) => {
   const clienteCpf = req.params.cpf;
-  Clientes.findOne({cpf:clienteCpf},function(err, cliente){
+  Clientes.findOne({ cpf: clienteCpf }, function(err, cliente) {
     if (err) res.status(500).send(err);
     if (!cliente) {
       return res.status(404).send({
@@ -112,6 +138,6 @@ exports.deleteCliente = (req, res) => {
       if (!err) {
         res.status(204).send({ message: `Cliente removido com sucesso` });
       }
-    }); 
-  })
-}
+    });
+  });
+};

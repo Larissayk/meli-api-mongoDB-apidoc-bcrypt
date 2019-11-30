@@ -8,7 +8,8 @@ const clientesSchema = new mongoose.Schema(
     dataNascimento: { type: Date },
     estadoCivil: { type: String },
     telefone: { type: Number },
-    comprou: { type: Boolean }
+    comprou: { type: Boolean },
+    password: {type: String}
   },
   { versionKey: false }
   
